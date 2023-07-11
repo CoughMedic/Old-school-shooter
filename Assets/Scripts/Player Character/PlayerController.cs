@@ -13,7 +13,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement system")]
     public float movement_multiplier = 0;
+    public float rot_multiplier = 0;
+
     public GameObject rot_point;
+    public GameObject vert_rot_point;
 
     public float move_bob_min = -1;
     public float move_bob_max = 1;
@@ -137,20 +140,35 @@ public class PlayerController : MonoBehaviour
     void updateRotation()
     {
         float horz_mouse = Input.GetAxis("Mouse X");
+        float vert_mouse = Input.GetAxis("Mouse Y");
 
         if (horz_mouse != 0)
         {
-            if(horz_mouse > 0.1)
+            Vector3 look_direction = new Vector3(0.0f, Time.deltaTime * (rot_multiplier * horz_mouse), 0.0f);
+            rot_point.transform.Rotate(look_direction);
+        }
+
+        if(vert_mouse != 0)
+        {
+            if(vert_rot_point.transform.eulerAngles.x < 300 && vert_rot_point.transform.eulerAngles.x > 40.0f)
             {
-                Vector3 look_direction = rot_point.transform.up * Time.deltaTime * (movement_multiplier * 20);
-                rot_point.transform.Rotate(look_direction);
+                var _ref = vert_rot_point.transform.eulerAngles;
+                _ref.x = 301.1f;
+                vert_rot_point.transform.eulerAngles = _ref;
+            }
+            else if(vert_rot_point.transform.eulerAngles.x > 30.0f && vert_rot_point.transform.eulerAngles.x < 40.0f)
+            {
+                var _ref = vert_rot_point.transform.eulerAngles;
+                _ref.x = 29.9f;
+                vert_rot_point.transform.eulerAngles = _ref;
             }
 
-            if (horz_mouse < -0.1)
-            {
-                Vector3 look_direction = -rot_point.transform.up * Time.deltaTime * (movement_multiplier * 20);
-                rot_point.transform.Rotate(look_direction);
-            }
+            var test = vert_rot_point.transform.eulerAngles;
+            print(test);
+
+            Vector3 look_direction = new Vector3(-(Time.deltaTime * (rot_multiplier * vert_mouse)), 0.0f, 0.0f);
+                vert_rot_point.transform.Rotate(look_direction);
+            
         }
     }
 

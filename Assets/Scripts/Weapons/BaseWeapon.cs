@@ -98,7 +98,8 @@ public class BaseWeapon : MonoBehaviour
     {
         play_animation_shoot = true;
         animation_finished = false;
-        GameObject bullet = Instantiate(bullet_prefab, player_go.transform.position, player_go.GetComponent<PlayerController>().rot_point.transform.rotation);
+
+        GameObject bullet = Instantiate(bullet_prefab, player_go.transform.position, player_go.GetComponent<PlayerController>().vert_rot_point.transform.rotation);
         bullet.transform.parent = null;
         audio_source.PlayOneShot(audio_clip);
         ammo_count -= 1;
